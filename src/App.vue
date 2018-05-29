@@ -41,8 +41,8 @@
         <v-list class="pa-0">
           <v-list-tile>
             <v-list-tile-content>
-              <v-list-tile-title>SquadMC</v-list-tile-title>
-              <v-list-tile-sub-title>The map-based mortar calculator for Squad</v-list-tile-sub-title>
+              <v-list-tile-title>PostScriptumMC</v-list-tile-title>
+              <v-list-tile-sub-title>The map-based mortar calculator for PostScriptum</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
