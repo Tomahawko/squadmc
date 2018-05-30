@@ -17,7 +17,7 @@ export const MAPDATA = [
     bounds: [5611, 5611], // map dimensions in meters
   },
   {
-    name: "Johanna",
+    name: "Oosterbeek",
     url: "/img/maps/johanna/{z}_{x}_{y}.jpg",
     bounds: [4508, 4508], // map dimensions in meters
   },
