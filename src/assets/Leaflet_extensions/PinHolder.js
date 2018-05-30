@@ -11,8 +11,10 @@ export default class PinHolder {
    * Creates a pin of given type using the image given by the url, without placing it on the map
    * @param {String} mUrl - url of pin icon graphic
    * @param {Number} type - type of pin
+   * @param {Number} [maxDistance] - custom max distance
    */
-  constructor(mUrl, type) {
+  constructor(mUrl, type, maxDistance = MAX_DISTANCE) {
+    this.maxDistance = maxDistance;
     const icon = new Icon({
       iconUrl: mUrl,
       iconSize: [ICON_SIZE, ICON_SIZE],
@@ -75,7 +77,7 @@ export default class PinHolder {
 
     this.maxRangeCircle = new Circle(this.defLatlng, {
       draggable: "false",
-      radius: MAX_DISTANCE,
+      radius: this.maxDistance,
       color: "#4CAF50",
       // fillOpacity: 0,
       fillOpacity: 0.05,
@@ -207,5 +209,14 @@ export default class PinHolder {
    */
   getLatLng() {
     return this.marker.getLatLng();
+  }
+
+  setMaxDistance(maxDistance) {
+    console.log("setMaxDistance", maxDistance);
+    this.maxDistance = maxDistance;
+    if (this.maxRangeCircle) {
+      console.log("maxRangeCircle", this.maxRangeCircle);
+      this.maxRangeCircle.setRadius(maxDistance);
+    }
   }
 }

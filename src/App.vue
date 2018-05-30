@@ -58,55 +58,34 @@
             </v-badge>
           </v-list-tile-action>
         </v-list-tile>
+        <v-divider></v-divider>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title>Set mortar type</v-list-tile-title>
+            <v-list-tile-sub-title>
+              <v-btn-toggle v-model="mTypeIndex" mandatory>
+              <v-btn flat v-for="(mType, i) in mortarTypes" :key="i">
+                {{mType[0]}}
+              </v-btn>
+            </v-btn-toggle></v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
+      <v-divider></v-divider>
       <v-list class="pa-0">
-        <v-list-group :value="true">
-          <v-list-tile slot="activator">
-            <v-list-tile-content>
-              <v-list-tile-title>Map Settings</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-switch
-                  v-model="showGrid"
-              ></v-switch>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Show Keypad Grid</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-avatar>
-              <v-icon>grid_on</v-icon>
-            </v-list-tile-avatar>
-          </v-list-tile>
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-switch
-                  v-model="showHeightmap"
-                  :disabled="!squadMap || !squadMap.hasHeightmap"
-              ></v-switch>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Show Heightmap</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-avatar>
-              <v-icon>terrain</v-icon>
-            </v-list-tile-avatar>
-          </v-list-tile>
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-switch
-                  v-model="showLocations"
-              ></v-switch>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Show Locations</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-avatar>
-              <v-icon>not_listed_location</v-icon>
-            </v-list-tile-avatar>
-          </v-list-tile>
-        </v-list-group>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-switch
+                v-model="showGrid"
+            ></v-switch>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Show Keypad Grid</v-list-tile-title>
+          </v-list-tile-content>
+          <v-list-tile-avatar>
+            <v-icon>grid_on</v-icon>
+          </v-list-tile-avatar>
+        </v-list-tile>
         <v-list-group :disabled="placedMortars.length + placedFobs.length + placedTargets.length === 0">
           <v-list-tile slot="activator">
             <v-list-tile-content>
@@ -235,7 +214,13 @@ import SquadGrid from "./assets/Leaflet_extensions/SquadGrid";
 import LocationLayer from "./assets/Leaflet_extensions/LocationLayer";
 import { getMapNames, getSquadMap } from "./assets/Leaflet_extensions/MAPDATA";
 import { calcMortarAngle, getKP, pad } from "./assets/Leaflet_extensions/Utils";
-import { PIN_TYPE } from "./assets/Leaflet_extensions/Vars";
+import {
+  PIN_TYPE, PS_BR1_MAX_DISTANCE,
+  PS_BR1_VELOCITY, PS_BR2_MAX_DISTANCE,
+  PS_BR2_VELOCITY,
+  PS_GER_MAX_DISTANCE,
+  PS_GER_VELOCITY,
+} from "./assets/Leaflet_extensions/Vars";
 import PinHolder from "./assets/Leaflet_extensions/PinHolder";
 
 export default {
@@ -279,6 +264,12 @@ export default {
       elevation: undefined,
       dist: undefined,
       heightDiff: undefined,
+      mortarTypes: [
+        ["GER 8cm", PS_GER_VELOCITY, PS_GER_MAX_DISTANCE],
+        ["BRIT 4″", PS_BR1_VELOCITY, PS_BR1_MAX_DISTANCE],
+        ["BRIT 3″", PS_BR2_VELOCITY, PS_BR2_MAX_DISTANCE],
+      ],
+      mTypeIndex: Number.parseInt(this.fromStorage("mTypeIndex", "0")),
 
       PIN_TYPE, // reference to pin types
       pad, // reference to padding function used for formatting distance, heightDiff, etc.
@@ -502,8 +493,8 @@ export default {
       }
 
       // console.log("pin doesn't exist, yet, creating it...");
-
-      const pin = new PinHolder(mUrl, type);
+      console.log("ONSELECT: what is selected Map:", typeof this.mTypeIndex);
+      const pin = new PinHolder(mUrl, type, this.currentMType[2]);
       pin.setLatLng(this.menuLatlng);
       pin.addTo(this.map);
 
@@ -553,7 +544,9 @@ export default {
       // console.log(`calcMortar: m:${mortarHeight} t:${targetHeight}`);
 
       const heightDiff = targetHeight - mortarHeight;
-      const elevation = Math.round(calcMortarAngle(dist, heightDiff));
+
+      const mVelocity = this.currentMType[1];
+      const elevation = Math.round(calcMortarAngle(dist, heightDiff, mVelocity));
 
       // create or move the line
       if (!this.distLine) {
@@ -738,6 +731,23 @@ export default {
       if (newM) {
         newM.setActive(true, this.map);
       }
+    },
+    mTypeIndex(newIndex) {
+      const newMaxDist = this.currentMType[2];
+      this.placedMortars.forEach((m) => {
+        m.setMaxDistance(newMaxDist);
+      });
+
+      if (this.mortar && this.target) {
+        this.calcMortar(this.mortar, this.target);
+      }
+
+      this.toStorage("mTypeIndex", newIndex);
+    },
+  },
+  computed: {
+    currentMType() {
+      return this.mortarTypes[this.mTypeIndex];
     },
   },
 };

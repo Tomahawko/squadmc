@@ -1,10 +1,6 @@
 /* eslint-disable quote-props */
 import SquadMap from "./SquadMap";
 
-let Johanna = 4508;
-let Driel = 4892;
-let Heelsum =  5611;
-
 /**
  * This object holds all relevant information of the squad maps, including dimensions, heightmap, etc.
  * @type {*[]}
