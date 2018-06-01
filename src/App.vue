@@ -168,13 +168,13 @@
     </v-toolbar>
     <v-content class="fixed">
       <div id="map" class="fixed"></div>
-      <div class="bottom-bar">
+      <div class="bottom-bar" style="pointer-events: none;">
         <v-card class="ma-2 d-inline-flex" v-if="showKeypadTimeout" style="width: fit-content">
           <v-card-text class="keypadLabel d-inline">
             {{mouseKeypad}}
           </v-card-text>
         </v-card>
-        <v-footer v-if="mortar && target" class="front" height="auto">
+        <v-footer v-if="mortar && target" class="front" height="auto" style="pointer-events: all">
           <v-speed-dial>
             <v-btn fab small slot="activator" class="secondary">
               <img :src="mortar.mUrl" width="48px" height="48px">
