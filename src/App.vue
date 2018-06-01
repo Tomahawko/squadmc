@@ -253,7 +253,7 @@ export default {
       locationLayer: new LocationLayer(), // locationlayer
       showGrid: this.fromStorage("showGrid", "true") === "true",
       showHeightmap: this.fromStorage("showHeightmap", "false") === "true",
-      showLocations: this.fromStorage("showLocations", "true") === "true",
+      showLocations: this.fromStorage("showLocations", "false") === "true",
       selectedMap: this.fromStorage("selectedMap", undefined), // selected map in top selector
       mouseKeypad: undefined, // keypad shown in bottom left corner
       showKeypadTimeout: undefined, // value of timeout, set when mouse is moved, set undefined after 1 sec
