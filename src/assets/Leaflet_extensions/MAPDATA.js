@@ -1,6 +1,8 @@
 /* eslint-disable quote-props */
 import SquadMap from "./SquadMap";
 
+const mapsUrl = "https://maps.squadmc.ende.pro";
+
 /**
  * This object holds all relevant information of the squad maps, including dimensions, heightmap, etc.
  * @type {*[]}
@@ -8,11 +10,11 @@ import SquadMap from "./SquadMap";
 export const MAPDATA = [
   {
     name: "Al Basrah",
-    url: "/img/maps/albasrah/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/albasrah/{z}_{x}_{y}.jpg`,
     bounds: [3200, 3200], // map dimensions in meters
     heightmap: {
-      url: "/img/heightmaps/albasrah.jpg",
-      tile: "/img/heightmaps/albasrah/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/albasrah.jpg`,
+      tile: `${mapsUrl}/heightmaps/albasrah/{z}_{x}_{y}.jpg`,
       // scale is 512 color values (we use red and blue channels, i.e. 256*2),
       // multiplied by the optimized level range,
       //    (e.g. level is 0 to 1, and we optimize it so it is now 0.2 to 0.5, then factor is 0.3)
@@ -46,11 +48,11 @@ export const MAPDATA = [
   },
   {
     name: "Belaya",
-    url: "/img/maps/belaya/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/belaya/{z}_{x}_{y}.jpg`,
     bounds: [3905, 3905],
     heightmap: {
-      url: "/img/heightmaps/belaya.jpg",
-      tile: "/img/heightmaps/belaya/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/belaya.jpg`,
+      tile: `${mapsUrl}/heightmaps/belaya/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.0726 * 1.00) / 512,
     },
     locations: [
@@ -73,11 +75,11 @@ export const MAPDATA = [
   },
   {
     name: "Chora Valley",
-    url: "/img/maps/chora/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/chora/{z}_{x}_{y}.jpg`,
     bounds: [4064, 4064],
     heightmap: {
-      url: "/img/heightmaps/chora.jpg",
-      tile: "/img/heightmaps/chora/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/chora.jpg`,
+      tile: `${mapsUrl}/heightmaps/chora/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.0160 * 4.00) / 512,
     },
     locations: [
@@ -112,11 +114,11 @@ export const MAPDATA = [
   },
   {
     name: "Fool's Road",
-    url: "/img/maps/foolsroad/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/foolsroad/{z}_{x}_{y}.jpg`,
     bounds: [1736, 1774],
     heightmap: {
-      url: "/img/heightmaps/foolsroad.jpg",
-      tile: "/img/heightmaps/foolsroad/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/foolsroad.jpg`,
+      tile: `${mapsUrl}/heightmaps/foolsroad/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.0492 * 3.20) / 512,
     },
     locations: [
@@ -143,11 +145,11 @@ export const MAPDATA = [
   },
   {
     name: "Operation First Light",
-    url: "/img/maps/forest/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/forest/{z}_{x}_{y}.jpg`,
     bounds: [1200, 1200],
     heightmap: {
-      url: "/img/heightmaps/forest.jpg",
-      tile: "/img/heightmaps/forest/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/forest.jpg`,
+      tile: `${mapsUrl}/heightmaps/forest/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.6931 * 0.08) / 512,
     },
     locations: [
@@ -173,11 +175,11 @@ export const MAPDATA = [
   },
   {
     name: "Gorodok",
-    url: "/img/maps/gorodok/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/gorodok/{z}_{x}_{y}.jpg`,
     bounds: [4340, 4340],
     heightmap: {
-      url: "/img/heightmaps/gorodok.jpg",
-      tile: "/img/heightmaps/gorodok/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/gorodok.jpg`,
+      tile: `${mapsUrl}/heightmaps/gorodok/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.0119 * 10.00) / 512,
     },
     locations: [
@@ -203,11 +205,11 @@ export const MAPDATA = [
   },
   {
     name: "Jensen's Range",
-    url: "/img/maps/jensens/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/jensens/{z}_{x}_{y}.jpg`,
     bounds: [1510, 1510],
     heightmap: {
-      url: "/img/heightmaps/jensens.jpg",
-      tile: "/img/heightmaps/jensens/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/jensens.jpg`,
+      tile: `${mapsUrl}/heightmaps/jensens/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.569 * 0.15) / 512,
     },
     locations: [
@@ -229,7 +231,7 @@ export const MAPDATA = [
   },
   {
     name: "Kamdesh Highlands",
-    url: "/img/maps/kamdesh/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/kamdesh/{z}_{x}_{y}.jpg`,
     bounds: [4036, 4036],
     locations: [
       ["Sao", [2142, 1066]],
@@ -255,11 +257,11 @@ export const MAPDATA = [
   },
   {
     name: "Kohat Toi River Valley",
-    url: "/img/maps/kohat/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/kohat/{z}_{x}_{y}.jpg`,
     bounds: [4017, 4017],
     heightmap: {
-      url: "/img/heightmaps/kohat.jpg",
-      tile: "/img/heightmaps/kohat/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/kohat.jpg`,
+      tile: `${mapsUrl}/heightmaps/kohat/{z}_{x}_{y}.jpg`,
       scale: (512 * 1 * 0.75) / 512,
     },
     locations: [
@@ -289,11 +291,11 @@ export const MAPDATA = [
   },
   {
     name: "Kokan",
-    url: "/img/maps/kokan/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/kokan/{z}_{x}_{y}.jpg`,
     bounds: [2496, 2496],
     heightmap: {
-      url: "/img/heightmaps/kokan.jpg",
-      tile: "/img/heightmaps/kokan/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/kokan.jpg`,
+      tile: `${mapsUrl}/heightmaps/kokan/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.0164 * 1.00) / 512,
     },
     locations: [
@@ -319,11 +321,11 @@ export const MAPDATA = [
   },
   {
     name: "Logar Valley",
-    url: "/img/maps/logarvalley/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/logarvalley/{z}_{x}_{y}.jpg`,
     bounds: [1761, 1761],
     heightmap: {
-      url: "/img/heightmaps/logarvalley.jpg",
-      tile: "/img/heightmaps/logarvalley/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/logarvalley.jpg`,
+      tile: `${mapsUrl}/heightmaps/logarvalley/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.2715 * 0.50) / 512,
     },
     locations: [
@@ -353,11 +355,11 @@ export const MAPDATA = [
   },
   {
     name: "Mestia",
-    url: "/img/maps/mestia/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/mestia/{z}_{x}_{y}.jpg`,
     bounds: [2400, 2400],
     heightmap: {
-      url: "/img/heightmaps/mestia.jpg",
-      tile: "/img/heightmaps/mestia/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/mestia.jpg`,
+      tile: `${mapsUrl}/heightmaps/mestia/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.3419 * 1.20) / 512,
     },
     locations: [
@@ -385,11 +387,11 @@ export const MAPDATA = [
   },
   {
     name: "Narva",
-    url: "/img/maps/narva/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/narva/{z}_{x}_{y}.jpg`,
     bounds: [2800, 2800],
     heightmap: {
-      url: "/img/heightmaps/narva.jpg",
-      tile: "/img/heightmaps/narva/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/narva.jpg`,
+      tile: `${mapsUrl}/heightmaps/narva/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.0583 * 1.00) / 512,
     },
     locations: [
@@ -434,11 +436,11 @@ export const MAPDATA = [
   },
   {
     name: "Sumari Bala",
-    url: "/img/maps/sumari/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/sumari/{z}_{x}_{y}.jpg`,
     bounds: [1300, 1300],
     heightmap: {
-      url: "/img/heightmaps/sumari.jpg",
-      tile: "/img/heightmaps/sumari/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/sumari.jpg`,
+      tile: `${mapsUrl}/heightmaps/sumari/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.0479 * 0.75) / 512,
     },
     locations: [
@@ -469,11 +471,11 @@ export const MAPDATA = [
   },
   {
     name: "Yehorivka",
-    url: "/img/maps/yehorivka/{z}_{x}_{y}.jpg",
+    url: `${mapsUrl}/maps/yehorivka/{z}_{x}_{y}.jpg`,
     bounds: [4034, 4034],
     heightmap: {
-      url: "/img/heightmaps/yehorivka.jpg",
-      tile: "/img/heightmaps/yehorivka/{z}_{x}_{y}.jpg",
+      url: `${mapsUrl}/heightmaps/yehorivka.jpg`,
+      tile: `${mapsUrl}/heightmaps/yehorivka/{z}_{x}_{y}.jpg`,
       scale: (512 * 0.0683 * 4.00) / 512,
     },
     locations: [
