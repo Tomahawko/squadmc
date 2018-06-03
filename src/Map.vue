@@ -242,7 +242,6 @@
 import "@babel/polyfill";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import "vuetify/dist/vuetify.min.css";
 
 import { CRS, Map, Point, Polyline, Transformation } from "./assets/Leaflet/dist/leaflet-src.esm";
 
@@ -801,6 +800,7 @@ export default {
 </script>
 
 <style>
+@import "~vuetify/dist/vuetify.min.css";
 @import "~material-icons/iconfont/material-icons.css";
 @import "./assets/Leaflet/dist/leaflet.css";
 
