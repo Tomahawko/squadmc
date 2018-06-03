@@ -84,6 +84,20 @@
     </v-list>
     <v-list class="pa-0">
       <v-list-group :value="true">
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-switch
+                v-model="simpleMode"
+            ></v-switch>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Toggle simple mode</v-list-tile-title>
+            <v-list-tile-sub-title>click sets mortar/target directly</v-list-tile-sub-title>
+          </v-list-tile-content>
+          <v-list-tile-avatar>
+            <v-icon>location_on</v-icon>
+          </v-list-tile-avatar>
+        </v-list-tile>
         <v-list-tile slot="activator">
           <v-list-tile-content>
             <v-list-tile-title>Map Settings</v-list-tile-title>
@@ -140,7 +154,7 @@
           <v-list-tile-content>
             <v-layout>
               <v-btn icon v-for="(aMortar, i) in placedMortars" :key="i" @click="removeMortar(i)">
-                <img :src="aMortar.mUrl" width="48px" height="48px">
+                <img :src="aMortar.url" width="48px" height="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -149,7 +163,7 @@
           <v-list-tile-content>
             <v-layout>
               <v-btn icon v-for="(aTarget, i) in placedTargets" :key="i" @click="removeTarget(i)">
-                <img :src="aTarget.mUrl" width="48px" height="48px">
+                <img :src="aTarget.url" width="48px" height="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -158,7 +172,7 @@
           <v-list-tile-content>
             <v-layout>
               <v-btn icon v-for="(aFob, i) in placedFobs" :key="i" @click="removeFob(i)">
-                <img :src="aFob.mUrl" width="48px" height="48px">
+                <img :src="aFob.url" width="48px" height="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -177,26 +191,26 @@
       <v-footer v-if="mortar && target" class="front" height="auto" style="pointer-events: all">
         <v-speed-dial>
           <v-btn fab small slot="activator" class="secondary">
-            <img :src="mortar.mUrl" width="48px" height="48px">
+            <img :src="mortar.url" width="48px" height="48px">
           </v-btn>
           <v-btn icon
                  v-for="(aMortar, index) in placedMortars"
                  :key="index"
                  @click="mortar = placedMortars[index]"
           >
-            <img :src="aMortar.mUrl" width="48px" height="48px">
+            <img :src="aMortar.url" width="48px" height="48px">
           </v-btn>
         </v-speed-dial>
         <v-icon :color="distLine && distLine.options.color">arrow_forward</v-icon>
         <v-speed-dial v-if="target">
           <v-btn fab small slot="activator" class="secondary">
-            <img :src="target.mUrl" width="48px" height="48px">
+            <img :src="target.url" width="48px" height="48px">
           </v-btn>
           <v-btn icon
                  v-for="(aTarget, index) in placedTargets"
                  :key="index"
                  @click="target = placedTargets[index]">
-            <img :src="aTarget.mUrl" width="48px" height="48px">
+            <img :src="aTarget.url" width="48px" height="48px">
           </v-btn>
         </v-speed-dial>
         <v-flex>
@@ -206,24 +220,20 @@
                 <v-list-tile-title>
                   <v-layout row>
                     <v-flex text-xs-center class="px-1">
-                      {{`✵${pad((Math.round(bearing * 10) / 10).toFixed(1), 5)}°`}}
+                      {{`✵${pad((Math.round(c.bearing * 10) / 10).toFixed(1), 5)}°`}}
                     </v-flex>
                     <v-flex text-xs-center class="px-1">
-                      {{Number.isNaN(elevation) ? "∠XXXXmil" : `∠${pad(Math.round(elevation), 4)}mil`}}
+                      {{Number.isNaN(c.elevation) ? "∠XXXXmil" : `∠${pad(Math.round(c.elevation), 4)}mil`}}
                     </v-flex>
                   </v-layout>
                 </v-list-tile-title>
                 <v-list-tile-sub-title>
                   <v-layout row>
                     <v-flex text-xs-center class="px-1">
-                      {{`↔${pad(Math.round(dist), 4)}m`}}
+                      {{`↔${pad(Math.round(c.dist), 4)}m`}}
                     </v-flex>
                     <v-flex text-xs-center class="px-1">
-                      {{
-                      heightDiff > 0 ?
-                      `↕+${pad(Math.round(heightDiff), 3)}m` :
-                      `↕-${pad(Math.round(-heightDiff), 3)}m`
-                      }}
+                      {{c.hDelta > 0 ? `↕+${pad(Math.round(c.hDelta), 3)}m`:`↕-${pad(Math.round(-c.hDelta), 3)}m`}}
                     </v-flex>
                   </v-layout>
                 </v-list-tile-sub-title>
@@ -234,6 +244,25 @@
       </v-footer>
     </div>
   </v-content>
+  <v-content class="fixed" style="pointer-events: none" v-if="simpleMode">
+    <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end">
+      <div style="display: flex; flex-direction: column" class="pt-3">
+        <v-btn icon large style="pointer-events: all" v-if="mortar" class="secondary">
+          <v-badge color="red" left overlap>
+            <span slot="badge"><v-icon>clear</v-icon></span>
+            <!--<v-icon large>mail</v-icon>-->
+            <img :src="mortar.url" style="width: 40px; height: 40px;">
+          </v-badge>
+        </v-btn>
+        <v-btn icon large style="pointer-events: all" v-if="target">
+          <v-badge color="red" left overlap>
+            <span slot="badge"><v-icon>clear</v-icon></span>
+            <img :src="target.url" style="width: 40px; height: 40px;">
+          </v-badge>
+        </v-btn>
+      </div>
+    </div>
+  </v-content>
   <canvas id="heightmap"></canvas>
 </v-app>
 </template>
@@ -242,6 +271,7 @@
 import "@babel/polyfill";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
 
 import { CRS, Map, Point, Polyline, Transformation } from "./assets/Leaflet/dist/leaflet-src.esm";
 
@@ -291,13 +321,17 @@ export default {
       loading: true,
 
       // values for mortar settings, distance, etc.
-      bearing: undefined,
-      elevation: undefined,
-      dist: undefined,
-      heightDiff: undefined,
+      c: {
+        bearing: undefined,
+        elevation: undefined,
+        dist: undefined,
+        hDelta: undefined,
+      },
 
       PIN_TYPE, // reference to pin types
       pad, // reference to padding function used for formatting distance, heightDiff, etc.
+
+      simpleMode: this.fromStorage("simpleMode", "false") === "true",
     };
   },
   mounted() {
@@ -490,7 +524,17 @@ export default {
       if (!dragging) {
         this.menuLatlng = e.latlng;
         this.menuPos = new Point(e.originalEvent.x, e.originalEvent.y);
-        this.showMenu = true;
+
+        // in simple mode, place mortar or target directly
+        if (this.simpleMode) {
+          if (this.placedMortars.length === 0) {
+            this.onSelect(this.mortarColors[0], PIN_TYPE.MORTAR);
+          } else {
+            this.onSelect(this.targetColors[0], PIN_TYPE.TARGET);
+          }
+        } else {
+          this.showMenu = true;
+        }
       }
     },
     /**
@@ -503,7 +547,7 @@ export default {
 
       // check placed pins. if pin exists already, just move it
       for (let i = 0; i < this.placedMortars.length; i += 1) {
-        if (mUrl === this.placedMortars[i].mUrl) {
+        if (mUrl === this.placedMortars[i].url) {
           this.placedMortars[i].pos = this.menuLatlng;
           this.mortar = this.placedMortars[i];
           return;
@@ -512,7 +556,7 @@ export default {
 
       // check placed pins. if pin exists already, just move it
       for (let i = 0; i < this.placedTargets.length; i += 1) {
-        if (mUrl === this.placedTargets[i].mUrl) {
+        if (mUrl === this.placedTargets[i].url) {
           this.placedTargets[i].pos = this.menuLatlng;
           this.target = this.placedTargets[i];
           return;
@@ -521,7 +565,7 @@ export default {
 
       // check placed pins. if pin exists already, just move it
       for (let i = 0; i < this.placedFobs.length; i += 1) {
-        if (mUrl === this.placedFobs[i].mUrl) {
+        if (mUrl === this.placedFobs[i].url) {
           this.placedFobs[i].pos = this.menuLatlng;
           return;
         }
@@ -578,8 +622,8 @@ export default {
       const targetHeight = this.squadMap.hasHeightmap ? this.squadMap.getHeightmapHolder().getHeight(e.lng, e.lat) : 0;
       // console.log(`calcMortar: m:${mortarHeight} t:${targetHeight}`);
 
-      const heightDiff = targetHeight - mortarHeight;
-      const elevation = Math.round(calcMortarAngle(dist, heightDiff));
+      const hDelta = targetHeight - mortarHeight;
+      const elevation = Math.round(calcMortarAngle(dist, hDelta));
 
       // create or move the line
       if (!this.distLine) {
@@ -600,10 +644,12 @@ export default {
         this.map.addLayer(this.distLine);
       }
 
-      this.bearing = bearing;
-      this.elevation = elevation;
-      this.dist = dist;
-      this.heightDiff = heightDiff;
+      this.c = {
+        bearing,
+        elevation,
+        dist,
+        hDelta,
+      };
 
       // time = Date.now() - time;
 
@@ -667,7 +713,7 @@ export default {
      * @param val - value of item
      */
     toStorage(item, val) {
-      // console.log("toStorage:", [item, val]);
+      console.log("toStorage:", [item, val]);
       if (localStorage) {
         localStorage.setItem(item, val.toString());
       } else {
@@ -795,12 +841,19 @@ export default {
         newM.setActive(true, this.map);
       }
     },
+    simpleMode(b) {
+      console.log("simpleMode watcher:", b);
+      if (b) {
+        // reset map
+        this.changeMap(this.selectedMap);
+      }
+      this.toStorage("simpleMode", b);
+    },
   },
 };
 </script>
 
 <style>
-@import "~vuetify/dist/vuetify.min.css";
 @import "~material-icons/iconfont/material-icons.css";
 @import "./assets/Leaflet/dist/leaflet.css";
 

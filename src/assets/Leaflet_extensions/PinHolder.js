@@ -9,12 +9,12 @@ import { getKP } from "./Utils";
 export default class PinHolder {
   /**
    * Creates a pin of given type using the image given by the url, without placing it on the map
-   * @param {String} mUrl - url of pin icon graphic
+   * @param {String} url - url of pin icon graphic
    * @param {Number} type - type of pin
    */
-  constructor(mUrl, type) {
+  constructor(url, type) {
     const icon = new Icon({
-      iconUrl: mUrl,
+      iconUrl: url,
       iconSize: [ICON_SIZE, ICON_SIZE],
       iconAnchor: [ICON_SIZE / 2, ICON_SIZE - 4],
       // point from which the popup should open relative to the iconAnchor
@@ -31,7 +31,7 @@ export default class PinHolder {
       this._createFobAttachments();
     }
 
-    this.mUrl = mUrl;
+    this.url = url;
     this.icon = icon;
     this.type = type;
     this.dragging = false;
