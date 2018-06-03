@@ -28,7 +28,7 @@
     "vue-template-compiler": "^2.5.16"
   },
   "browserslist": [
-    "> 1%",
+    "defaults",
     "last 2 versions",
     "not ie <= 8",
     "safari >= 8",
