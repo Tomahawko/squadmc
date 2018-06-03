@@ -13,6 +13,7 @@
     "eslint-config-mourner": "^2.0.3",
     "graceful-fs": "^4.1.11",
     "material-icons": "^0.2.3",
+    "raven-js": "^3.25.2",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.16",
     "vuetify": "^1.0.16"
