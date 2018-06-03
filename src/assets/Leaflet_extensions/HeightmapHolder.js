@@ -6,6 +6,7 @@ export default class HeightmapHolder {
     this.c = document.getElementById("heightmap") || document.createElement("canvas");
     this.ctx = this.c.getContext("2d");
     this.img = new Image();
+    this.img.crossOrigin = "Anonymous";
     this.hasHeightmap = false;
     this.scale = 1;
   }
