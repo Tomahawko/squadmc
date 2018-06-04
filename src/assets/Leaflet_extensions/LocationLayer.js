@@ -9,14 +9,14 @@ import { LayerGroup, Util } from "../Leaflet/dist/leaflet-src.esm";
 export default LayerGroup.extend({
 
   initialize(options = {}) {
-    // console.log("initialize:", options);
+    console.log("initialize:", options);
     LayerGroup.prototype.initialize.call(this); // don't know why, but this is important
     Util.setOptions(this, options);
   },
 
   onAdd() {
-    // console.log("onAdd");
-    // console.log("locations:", this.locations);
+    console.log("onAdd");
+    console.log("locations:", this.locations);
     // try to restore locations of (hopefully current) layer
     if (this.locations) {
       this.showLocations();
@@ -24,7 +24,7 @@ export default LayerGroup.extend({
   },
 
   onRemove() {
-    // console.log("onRemove");
+    console.log("onRemove");
 
     this.hideLocations();
   },
@@ -33,7 +33,7 @@ export default LayerGroup.extend({
    * Add locations to its layer
    */
   showLocations() {
-    // console.log("showLocations");
+    console.log("showLocations");
 
     if (this.locations) {
       this.locations.forEach((l) => {
@@ -46,7 +46,7 @@ export default LayerGroup.extend({
    * Removes every loaded location marker
    */
   hideLocations() {
-    // console.log("hideLocations");
+    console.log("hideLocations");
 
     this.eachLayer((layer) => {
       this.removeLayer(layer);
@@ -59,7 +59,7 @@ export default LayerGroup.extend({
    * @param locations - location objects
    */
   setLocations(locations) {
-    // console.log("setLocations:", locations);
+    console.log("setLocations:", locations);
 
     this.locations = locations;
 

@@ -33,6 +33,9 @@ module.exports = {
       config.optimization.splitChunks.cacheGroups.vuetify = {
         test: /[\\/]vuetify[\\/]/,
       };
+
+      // remove console prints
+      config.optimization.minimizer[0].options.uglifyOptions.compress.drop_console = true;
     }
   },
 };

@@ -10,7 +10,7 @@ export default class SquadMap {
    * @param mapDataObj - object holding map data
    */
   constructor(mapDataObj) {
-    // console.log("initializing SquadMap with:", mapDataObj);
+    console.log("initializing SquadMap with:", mapDataObj);
     this._mapData = mapDataObj;
     this.hasHeightmap = !!mapDataObj.heightmap;
     this.hasLocations = !!mapDataObj.locations;
@@ -112,7 +112,7 @@ export default class SquadMap {
    * @returns {HeightmapHolder}
    */
   getHeightmapHolder() {
-    // console.log("getHeightmapHolder");
+    console.log("getHeightmapHolder");
     if (!this.hasHeightmap) { throw new Error(`${this._mapData.name} has no heightmap!`); }
 
     if (!this._heightmapHolder) {

@@ -363,7 +363,7 @@ export default {
     };
   },
   mounted() {
-    // console.log("MOUNTED");
+    console.log("mounted");
 
     // remove right click to fix context menu opening when long pressing pin for dragging
     document.oncontextmenu = function retFalse() {
@@ -493,7 +493,7 @@ export default {
      * @param e "mousemove" event
      */
     onMouseMove(e) {
-      // console.log("onMouseMove:", e);
+      console.debug("onMouseMove:", e);
 
       // format position as keypad for bottom left corner
       this.mouseKeypad = getKP(e.latlng.lat, e.latlng.lng);
@@ -503,7 +503,7 @@ export default {
         clearTimeout(this.showKeypadTimeout);
       }
       this.showKeypadTimeout = setTimeout(() => {
-        // console.log("clearing showKeypadTimeout MOVE", this.showKeypadTimeout);
+        console.log("clearing showKeypadTimeout MOVE", this.showKeypadTimeout);
         this.showKeypadTimeout = undefined;
       }, 1000);
     },
@@ -636,8 +636,7 @@ export default {
      * @param {PinHolder} target - target pin
      */
     calcMortar(mortar, target) {
-      // console.log("calcMortar", [mortar, target]);
-      // let time = Date.now();
+      console.log("calcMortar", [mortar, target]);
 
       const s = mortar.pos;
       const e = target.pos;
@@ -656,7 +655,6 @@ export default {
       // now we get the height and calculate the difference
       const mortarHeight = this.squadMap.hasHeightmap ? this.squadMap.getHeightmapHolder().getHeight(s.lng, s.lat) : 0;
       const targetHeight = this.squadMap.hasHeightmap ? this.squadMap.getHeightmapHolder().getHeight(e.lng, e.lat) : 0;
-      // console.log(`calcMortar: m:${mortarHeight} t:${targetHeight}`);
 
       const hDelta = targetHeight - mortarHeight;
       const elevation = Math.round(calcMortarAngle(dist, hDelta));
@@ -686,16 +684,13 @@ export default {
         dist,
         hDelta,
       };
-
-      // time = Date.now() - time;
-
-      // console.log(`calcMortar took ${time}ms`);
     },
     /**
      * Remove an already placed mortar, specified by its index in placedMortars
      * @param {Number} i - index of mortar in placedMortars
      */
     removeMortar(i) {
+      console.log("removeMortar:", i);
       const tMortar = this.placedMortars[i];
       this.placedMortars.splice(i, 1);
       if (tMortar === this.mortar) {
@@ -713,6 +708,7 @@ export default {
      * @param {Number} i - index of target in placedTargets
      */
     removeTarget(i) {
+      console.log("removeTarget:", i);
       const tTarget = this.placedTargets[i];
       this.placedTargets.splice(i, 1);
       if (tTarget === this.target) {
@@ -729,6 +725,7 @@ export default {
      * @param {Number} i - index of fob in placedFobs
      */
     removeFob(i) {
+      console.log("removeFob:", i);
       const tFob = this.placedFobs[i];
       this.placedFobs.splice(i, 1);
       tFob.removeFrom(this.map);
@@ -791,7 +788,7 @@ export default {
      * @param newMap
      */
     selectedMap(newMap) {
-      // console.log("watch selectedMap:", newMap);
+      console.log("selectedMap:", newMap);
       this.changeMap(newMap);
       this.toStorage("selectedMap", newMap);
     },
@@ -800,6 +797,7 @@ export default {
      * @param {Boolean} b
      */
     showGrid(b) {
+      console.log("showGrid:", b);
       if (b) {
         this.map.addLayer(this.grid);
       } else {
@@ -812,16 +810,16 @@ export default {
      * @param {Boolean} b
      */
     showHeightmap(b) {
-      // console.log("showHeightmap:", b);
+      console.log("showHeightmap:", b);
       if (b && this.squadMap.hasHeightmap) {
-        // console.log("adding heightmap");
+        console.log("adding heightmap");
         const heightmap = this.squadMap.getHeightmapTileLayer();
         if (!this.map.hasLayer(heightmap)) {
           this.map.addLayer(heightmap);
           heightmap.on("load", this.showHeightmapOnLoad);
         }
       } else {
-        // console.log("removing heightmap");
+        console.log("removing heightmap");
         const mapLayer = this.squadMap.getMapTileLayer();
         if (!this.map.hasLayer(mapLayer)) {
           this.map.addLayer(mapLayer);
@@ -835,6 +833,7 @@ export default {
      * @param {Boolean} b
      */
     showLocations(b) {
+      console.log("showLocations:", b);
       if (b) {
         this.map.addLayer(this.locationLayer);
       } else {
@@ -846,7 +845,7 @@ export default {
      * Triggers calculation on position change of active mortar
      */
     "mortar.pos": function mortarPosWatcher() {
-      // console.log(`MORTAR CHANGED: ${latlng.lat}|${latlng.lng}`);
+      console.log("mortarPosWatcher");
       if (this.mortar && this.target) {
         this.calcMortar(this.mortar, this.target);
       } else if (this.map.hasLayer(this.distLine)) {
@@ -857,7 +856,7 @@ export default {
      * Triggers calculation on position change of active target
      */
     "target.pos": function targetPosWatcher() {
-      // console.log(`TARGET CHANGED: ${latlng.lat}|${latlng.lng}`);
+      console.log("targetPosWatcher");
       if (this.mortar && this.target) {
         this.calcMortar(this.mortar, this.target);
       } else if (this.map.hasLayer(this.distLine)) {
@@ -870,6 +869,8 @@ export default {
      * @param oldM - old active mortar
      */
     mortar(newM, oldM) {
+      console.log("mortar:", [newM, oldM]);
+
       if (oldM) {
         oldM.setActive(false, this.map);
       }

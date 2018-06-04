@@ -50,14 +50,14 @@ export default LayerGroup.extend({
   },
 
   initialize(options) {
-    // console.debug("initialize");
+    console.debug("initialize");
 
     LayerGroup.prototype.initialize.call(this);
     Util.setOptions(this, options);
   },
 
   clearLines() {
-    // console.debug("clearLines");
+    console.debug("clearLines");
     this.eachLayer(this.removeLayer, this);
   },
 
@@ -75,7 +75,7 @@ export default LayerGroup.extend({
   },
 
   onAdd(map) {
-    // console.debug("onAdd");
+    console.debug("onAdd");
 
     this.map = map;
     // add listener for view change, so that  we can show (sub-)keypads based on zoom level
@@ -87,7 +87,7 @@ export default LayerGroup.extend({
   },
 
   onRemove(map) {
-    // console.debug("onRemove");
+    console.debug("onRemove");
 
     // remove listener for view change
     map.off("zoomend", this.updateLineOpacity, this);
@@ -102,7 +102,7 @@ export default LayerGroup.extend({
       return;
     }
     const currentZoom = Math.round(this.map.getZoom());
-    // console.debug("updateLineOpacity with zoom:", currentZoom);
+    console.debug("updateLineOpacity with zoom:", currentZoom);
 
     if (currentZoom >= 4) {
       this.setLinesOpacity(this.s2Lines, this.lineStyleSUB2.opacity);
@@ -127,7 +127,7 @@ export default LayerGroup.extend({
     if (lines.length === 0 || lines[0].options.opacity === opacity) {
       // //console.debug("nothing to do");
     } else {
-      // console.debug("setLinesOpacity:", [lines, opacity]);
+      console.debug("setLinesOpacity:", [lines, opacity]);
       lines.forEach((l) => {
         l.setStyle({
           opacity,
@@ -140,10 +140,10 @@ export default LayerGroup.extend({
    * Redraws the grid inside the current view bounds.
    */
   redraw() {
-    // console.log("redraw");
+    console.log("redraw");
 
     if (!this.bounds) {
-      // console.debug("no viewbounds, skipping draw");
+      console.debug("no viewbounds, skipping draw");
       return;
     }
     // clear old grid lines

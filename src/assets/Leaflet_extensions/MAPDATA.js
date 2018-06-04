@@ -509,12 +509,12 @@ export function getMapNames() {
   MAPDATA.forEach((map) => {
     names.push(map.name);
   });
-  // console.log(`returning map names: ${names}`);
+  console.log(`returning map names: ${names}`);
   return names;
 }
 
 export function getSquadMap(mapName) {
-  // console.log("getSquadMap:", mapName);
+  console.log("getSquadMap:", mapName);
   for (let i = 0; i < MAPDATA.length; i += 1) {
     if (mapName === MAPDATA[i].name) {
       return new SquadMap(MAPDATA[i]);

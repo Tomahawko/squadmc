@@ -17,7 +17,7 @@ export default class HeightmapHolder {
    * @param scale - z-scaling of heightmap
    */
   setMap(url, scale) {
-    // console.log("setMap:", [url, scale]);
+    console.log("setMap:", [url, scale]);
     this.scale = scale;
     this.img.onload = () => {
       // set new height
@@ -48,25 +48,25 @@ export default class HeightmapHolder {
    * @returns {number} - relative height in meters
    */
   getHeight(x, y) {
-    // console.log("getHeight:", [x, y]);
+    console.log("getHeight:", [x, y]);
     if (this.hasHeightmap) {
       const rx = Math.round(x);
       const ry = Math.round(y);
       const w = this.c.width;
       const h = this.c.height;
-      // console.log(`is (${rx}, ${ry}) in [${w}, ${h}]? ${rx >= 0 && rx < w && ry >= 0 && ry < h}`);
+      console.log(`is (${rx}, ${ry}) in [${w}, ${h}]? ${rx >= 0 && rx < w && ry >= 0 && ry < h}`);
       if (rx >= 0 && rx < w && ry >= 0 && ry < h) { // return data if point is on heightmap
-        // console.log("getHeight imageData:", this.ctx.getImageData(rx, ry, 1, 1).data);
         // heightmaps are optimized and use both blue and red color channels to represent height
         // color curve is blue<->black<->red
         // let's say heightmap is 0-512, then blue represents 0-256 and red represents 257-512
         const d = this.ctx.getImageData(rx, ry, 1, 1).data;
+        console.log("getHeight imageData:", d);
         return (255 - d[2] + d[0]) * this.scale;
       }
-      // console.log("getHeight: out of bounds");
+      console.log("getHeight: out of bounds");
       // return Number.NaN; // return NaN when out of bounds
     }
-    // console.log("getHeight: no heightmap, returning 0");
+    console.log("getHeight: no heightmap, returning 0");
     return 0; // let's ignore height if there is no heightmap, or heightmap is not ready yet
   }
 }

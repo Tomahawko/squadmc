@@ -92,16 +92,7 @@ export default class PinHolder {
 
   set size(size) {
     console.log("size:", size);
-    // console.log("marker before:", this.marker);
-    // const icon = this.marker.options.icon;
-    // console.log("icon:", icon);
-    //
-    // icon.iconSize = [size, size];
-    // icon.iconAnchor = [size / 2, size - (4 * size / ICON_SIZE)];
-    // // point from which the popup should open relative to the iconAnchor
-    // icon.popupAnchor = [0, -ICON_SIZE / 2];
     this.marker.setIcon(PinHolder.createIcon(this.pUrl, size));
-    // console.log("marker after:", this.marker);
   }
 
   /**
