@@ -253,17 +253,17 @@
   <v-content class="fixed" style="pointer-events: none" v-if="quickMode">
     <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start">
       <div style="display: flex; flex-direction: column" class="pt-2">
-        <v-btn icon large style="pointer-events: all" v-if="mortar" class="secondary" @click="removeMortar(0)">
+        <v-btn icon style="pointer-events: all" v-if="mortar" class="secondary" @click="removeMortar(0)">
           <v-badge color="red" right overlap style="margin-top: 6px">
             <span slot="badge"><v-icon>clear</v-icon></span>
             <!--<v-icon large>mail</v-icon>-->
-            <img :src="mortar.sUrl" style="width: 32px; height: 32px;">
+            <img :src="mortar.sUrl" style="width: 36px; height: 36px;">
           </v-badge>
         </v-btn>
-        <v-btn icon  style="pointer-events: all" v-if="target" class="secondary" @click="removeTarget(0)">
+        <v-btn icon style="pointer-events: all" v-if="target" class="secondary" @click="removeTarget(0)">
           <v-badge color="red" right overlap  style="margin-top: 6px">
             <span slot="badge"><v-icon>clear</v-icon></span>
-            <img :src="target.sUrl" style="width: 32px; height: 32px;">
+            <img :src="target.sUrl" style="width: 36px; height: 36px;">
           </v-badge>
         </v-btn>
       </div>
