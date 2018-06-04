@@ -7,21 +7,24 @@
       :position-x="menuPos.x"
       :position-y="menuPos.y"
   >
-    <v-card>
+    <v-card style="border: none">
       <v-content class="pa-0">
         <v-layout row>
           <v-layout column style="border-right: 2px #212121 solid">
-            <v-btn icon large v-for="(mUrl) in mortarColors" :key="mUrl" @click="onSelect(mUrl, PIN_TYPE.MORTAR)">
+            <v-btn icon style="margin: 2px 2px 2px 2px" large
+                   v-for="(mUrl, i) in colors.symbol.mortar" :key="i" @click="onSelect(i, PIN_TYPE.MORTAR)">
               <img :src="mUrl" width="48px" height="48px">
             </v-btn>
           </v-layout>
           <v-layout column>
-            <v-btn icon large v-for="(mUrl) in targetColors" :key="mUrl" @click="onSelect(mUrl, PIN_TYPE.TARGET)">
+            <v-btn icon style="margin: 2px 2px 2px 2px" large
+                   v-for="(mUrl, i) in colors.symbol.target" :key="i" @click="onSelect(i, PIN_TYPE.TARGET)">
               <img :src="mUrl" width="48px" height="48px">
             </v-btn>
           </v-layout>
           <v-layout column style="border-left: 2px #212121 solid">
-            <v-btn icon large v-for="(mUrl) in fobColors" :key="mUrl" @click="onSelect(mUrl, PIN_TYPE.FOB)">
+            <v-btn icon style="margin: 2px 2px 2px 2px" large
+                   v-for="(mUrl, i) in colors.symbol.fob" :key="i" @click="onSelect(i, PIN_TYPE.FOB)">
               <img :src="mUrl" width="48px" height="48px">
             </v-btn>
           </v-layout>
@@ -62,7 +65,7 @@
       <v-list class="pa-0">
         <v-list-tile>
           <v-list-tile-content>
-            <v-list-tile-title>SquadMC</v-list-tile-title>
+            <v-list-tile-title>SquadMC - {{version}}</v-list-tile-title>
             <v-list-tile-sub-title>The map-based mortar calculator for Squad</v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>
@@ -154,7 +157,7 @@
           <v-list-tile-content>
             <v-layout>
               <v-btn icon v-for="(aMortar, i) in placedMortars" :key="i" @click="removeMortar(i)">
-                <img :src="aMortar.url" width="48px" height="48px">
+                <img :src="aMortar.sUrl" width="48px" height="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -163,7 +166,7 @@
           <v-list-tile-content>
             <v-layout>
               <v-btn icon v-for="(aTarget, i) in placedTargets" :key="i" @click="removeTarget(i)">
-                <img :src="aTarget.url" width="48px" height="48px">
+                <img :src="aTarget.sUrl" width="48px" height="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -172,7 +175,7 @@
           <v-list-tile-content>
             <v-layout>
               <v-btn icon v-for="(aFob, i) in placedFobs" :key="i" @click="removeFob(i)">
-                <img :src="aFob.url" width="48px" height="48px">
+                <img :src="aFob.sUrl" width="48px" height="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -189,26 +192,26 @@
       <v-footer v-if="mortar && target" class="front" height="auto" style="pointer-events: all">
         <v-speed-dial>
           <v-btn fab small slot="activator" class="secondary">
-            <img :src="mortar.url" width="48px" height="48px">
+            <img :src="mortar.sUrl" width="48px" height="48px">
           </v-btn>
           <v-btn icon
                  v-for="(aMortar, index) in placedMortars"
                  :key="index"
                  @click="mortar = placedMortars[index]"
           >
-            <img :src="aMortar.url" width="48px" height="48px">
+            <img :src="aMortar.sUrl" width="48px" height="48px">
           </v-btn>
         </v-speed-dial>
         <v-icon :color="distLine && distLine.options.color">arrow_forward</v-icon>
         <v-speed-dial v-if="target">
           <v-btn fab small slot="activator" class="secondary">
-            <img :src="target.url" width="48px" height="48px">
+            <img :src="target.sUrl" width="48px" height="48px">
           </v-btn>
           <v-btn icon
                  v-for="(aTarget, index) in placedTargets"
                  :key="index"
                  @click="target = placedTargets[index]">
-            <img :src="aTarget.url" width="48px" height="48px">
+            <img :src="aTarget.sUrl" width="48px" height="48px">
           </v-btn>
         </v-speed-dial>
         <v-flex>
@@ -243,19 +246,19 @@
     </div>
   </v-content>
   <v-content class="fixed" style="pointer-events: none" v-if="simpleMode">
-    <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end">
-      <div style="display: flex; flex-direction: column" class="pt-3">
-        <v-btn icon large style="pointer-events: all" v-if="mortar" class="secondary">
-          <v-badge color="red" left overlap>
+    <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start">
+      <div style="display: flex; flex-direction: column" class="pt-2">
+        <v-btn icon large style="pointer-events: all" v-if="mortar" class="secondary" @click="removeMortar(0)">
+          <v-badge color="red" right overlap style="margin-top: 6px">
             <span slot="badge"><v-icon>clear</v-icon></span>
             <!--<v-icon large>mail</v-icon>-->
-            <img :src="mortar.url" style="width: 40px; height: 40px;">
+            <img :src="mortar.sUrl" style="width: 40px; height: 40px;">
           </v-badge>
         </v-btn>
-        <v-btn icon large style="pointer-events: all" v-if="target">
-          <v-badge color="red" left overlap>
+        <v-btn icon large style="pointer-events: all" v-if="target" class="secondary" @click="removeTarget(0)">
+          <v-badge color="red" right overlap  style="margin-top: 6px">
             <span slot="badge"><v-icon>clear</v-icon></span>
-            <img :src="target.url" style="width: 40px; height: 40px;">
+            <img :src="target.sUrl" style="width: 40px; height: 40px;">
           </v-badge>
         </v-btn>
       </div>
@@ -302,12 +305,24 @@ export default {
       target: undefined, // active target (for line drawing)
       distLine: undefined, // the line
       // available colors
-      mortarColors: ["/img/svg/mortar_pin_red.svg",
-        "/img/svg/mortar_pin_green.svg", "/img/svg/mortar_pin_blue.svg", "/img/svg/mortar_pin.svg"],
-      targetColors: ["/img/svg/target_pin_red.svg",
-        "/img/svg/target_pin_green.svg", "/img/svg/target_pin_blue.svg", "/img/svg/target_pin.svg"],
-      fobColors: ["/img/svg/fob_pin_red.svg",
-        "/img/svg/fob_pin_green.svg", "/img/svg/fob_pin_blue.svg", "/img/svg/fob_pin.svg"],
+      colors: {
+        pin: {
+          mortar: ["/img/svg/mortar_pin_red.svg",
+            "/img/svg/mortar_pin_green.svg", "/img/svg/mortar_pin_blue.svg", "/img/svg/mortar_pin.svg"],
+          target: ["/img/svg/target_pin_red.svg",
+            "/img/svg/target_pin_green.svg", "/img/svg/target_pin_blue.svg", "/img/svg/target_pin.svg"],
+          fob: ["/img/svg/fob_pin_red.svg",
+            "/img/svg/fob_pin_green.svg", "/img/svg/fob_pin_blue.svg", "/img/svg/fob_pin.svg"],
+        },
+        symbol: {
+          mortar: ["/img/svg/mortar_symbol_red.svg",
+            "/img/svg/mortar_symbol_green.svg", "/img/svg/mortar_symbol_blue.svg", "/img/svg/mortar_symbol.svg"],
+          target: ["/img/svg/target_symbol_red.svg",
+            "/img/svg/target_symbol_green.svg", "/img/svg/target_symbol_blue.svg", "/img/svg/target_symbol.svg"],
+          fob: ["/img/svg/fob_symbol_red.svg",
+            "/img/svg/fob_symbol_green.svg", "/img/svg/fob_symbol_blue.svg", "/img/svg/fob_symbol.svg"],
+        },
+      },
 
       placedMortars: [], // mortars currently on map
       placedTargets: [], // targets currently on map
@@ -526,9 +541,9 @@ export default {
         // in simple mode, place mortar or target directly
         if (this.simpleMode) {
           if (this.placedMortars.length === 0) {
-            this.onSelect(this.mortarColors[0], PIN_TYPE.MORTAR);
+            this.onSelect(3, PIN_TYPE.MORTAR);
           } else {
-            this.onSelect(this.targetColors[0], PIN_TYPE.TARGET);
+            this.onSelect(3, PIN_TYPE.TARGET);
           }
         } else {
           this.showMenu = true;
@@ -537,58 +552,55 @@ export default {
     },
     /**
      * Handles selected mortar/target/fob from map click menu, creating the pin or moving it to its new position
-     * @param {String} mUrl - image url of pin graphic
+     * @param {Number} urlIndex - image url index of pin & symbol graphic
      * @param {Number} type - type of pin, check PIN_TYPE in Vars
      */
-    onSelect(mUrl, type) {
-      console.log("onSelect", [mUrl, type]);
-
-      // check placed pins. if pin exists already, just move it
-      for (let i = 0; i < this.placedMortars.length; i += 1) {
-        if (mUrl === this.placedMortars[i].url) {
-          this.placedMortars[i].pos = this.menuLatlng;
-          this.mortar = this.placedMortars[i];
-          return;
-        }
-      }
-
-      // check placed pins. if pin exists already, just move it
-      for (let i = 0; i < this.placedTargets.length; i += 1) {
-        if (mUrl === this.placedTargets[i].url) {
-          this.placedTargets[i].pos = this.menuLatlng;
-          this.target = this.placedTargets[i];
-          return;
-        }
-      }
-
-      // check placed pins. if pin exists already, just move it
-      for (let i = 0; i < this.placedFobs.length; i += 1) {
-        if (mUrl === this.placedFobs[i].url) {
-          this.placedFobs[i].pos = this.menuLatlng;
-          return;
-        }
-      }
-
-      // console.log("pin doesn't exist, yet, creating it...");
-
-      const pin = new PinHolder(mUrl, type);
-      pin.pos = this.menuLatlng;
-      pin.addTo(this.map);
+    onSelect(urlIndex, type) {
+      console.log("onSelect", [urlIndex, type]);
 
       switch (type) {
         case PIN_TYPE.MORTAR:
-          this.mortar = pin;
-          this.placedMortars.push(pin);
+          // check placed pins. if pin exists already, just move it
+          for (let i = 0; i < this.placedMortars.length; i += 1) {
+            if (this.colors.pin.mortar[urlIndex] === this.placedMortars[i].pUrl) {
+              this.placedMortars[i].pos = this.menuLatlng;
+              this.mortar = this.placedMortars[i];
+              return;
+            }
+          }
+          this.mortar = new PinHolder(type, this.colors.pin.mortar[urlIndex], this.colors.symbol.mortar[urlIndex]);
+          this.mortar.pos = this.menuLatlng;
+          this.mortar.addTo(this.map);
+          this.placedMortars.push(this.mortar);
           break;
         case PIN_TYPE.TARGET:
-          this.target = pin;
-          this.placedTargets.push(pin);
+          for (let i = 0; i < this.placedTargets.length; i += 1) {
+            if (this.colors.pin.target[urlIndex] === this.placedTargets[i].pUrl) {
+              this.placedTargets[i].pos = this.menuLatlng;
+              this.target = this.placedTargets[i];
+              return;
+            }
+          }
+          this.target = new PinHolder(type, this.colors.pin.target[urlIndex], this.colors.symbol.target[urlIndex]);
+          this.target.pos = this.menuLatlng;
+          this.target.addTo(this.map);
+          this.placedTargets.push(this.target);
           break;
         case PIN_TYPE.FOB:
-          this.placedFobs.push(pin);
+          for (let i = 0; i < this.placedFobs.length; i += 1) {
+            if (this.colors.pin.fob[urlIndex] === this.placedFobs[i].pUrl) {
+              this.placedFobs[i].pos = this.menuLatlng;
+              this.fob = this.placedFobs[i];
+              return;
+            }
+          }
+          this.fob = new PinHolder(type, this.colors.pin.fob[urlIndex], this.colors.symbol.fob[urlIndex]);
+          this.fob.pos = this.menuLatlng;
+          this.fob.addTo(this.map);
+          this.placedFobs.push(this.fob);
           break;
         default:
-          console.error(`Unrecognized pin type ${type}!`);
+          console.error(`Unrecognized pin type ${type}!`); // should never happen
       }
     },
     /**
@@ -846,6 +858,15 @@ export default {
         this.changeMap(this.selectedMap);
       }
       this.toStorage("simpleMode", b);
+    },
+  },
+  computed: {
+    version() {
+      const version = process.env.git.VERSION;
+      const branch = process.env.git.BRANCH;
+
+      // only add branch if not on master
+      return `${version}${branch === "master" ? "" : (`-${branch}`)}`;
     },
   },
 };
