@@ -92,6 +92,15 @@
             <v-list-tile-title>Map Settings</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile style="background-color: #b71c1c" v-if="!hasLocalStorage">
+          <v-list-tile-content>
+            <v-list-tile-title>No localStorage!</v-list-tile-title>
+            <v-list-tile-sub-title>Your settings won't be saved</v-list-tile-sub-title>
+          </v-list-tile-content>
+          <v-list-tile-avatar>
+            <v-icon>warning</v-icon>
+          </v-list-tile-avatar>
+        </v-list-tile>
         <v-list-tile>
           <v-list-tile-action>
             <v-switch
@@ -899,6 +908,9 @@ export default {
 
       // only add branch if not on master
       return `${version}${branch === "master" ? "" : (`-${branch}`)}`;
+    },
+    hasLocalStorage() {
+      return localStorage !== undefined;
     },
   },
 };
