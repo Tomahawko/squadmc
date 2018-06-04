@@ -16,6 +16,7 @@ module.exports = {
       "allowAfterThis": true,
       "allowAfterSuper": true,
     }],
+    "no-param-reassign": "off",
   },
   parserOptions: {
     parser: "babel-eslint",
