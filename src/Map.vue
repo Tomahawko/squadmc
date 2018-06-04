@@ -13,19 +13,19 @@
           <v-layout column style="border-right: 2px #212121 solid">
             <v-btn icon style="margin: 2px 2px 2px 2px" large
                    v-for="(mUrl, i) in colors.symbol.mortar" :key="i" @click="onSelect(i, PIN_TYPE.MORTAR)">
-              <img :src="mUrl" width="48px" height="48px">
+              <img :src="mUrl" width="48px">
             </v-btn>
           </v-layout>
           <v-layout column>
             <v-btn icon style="margin: 2px 2px 2px 2px" large
                    v-for="(mUrl, i) in colors.symbol.target" :key="i" @click="onSelect(i, PIN_TYPE.TARGET)">
-              <img :src="mUrl" width="48px" height="48px">
+              <img :src="mUrl" width="48px">
             </v-btn>
           </v-layout>
           <v-layout column style="border-left: 2px #212121 solid">
             <v-btn icon style="margin: 2px 2px 2px 2px" large
                    v-for="(mUrl, i) in colors.symbol.fob" :key="i" @click="onSelect(i, PIN_TYPE.FOB)">
-              <img :src="mUrl" width="48px" height="48px">
+              <img :src="mUrl" width="48px">
             </v-btn>
           </v-layout>
         </v-layout>
@@ -41,7 +41,7 @@
     <v-toolbar-side-icon @click.stop="drawer = !drawer">
       <v-icon>menu</v-icon>
     </v-toolbar-side-icon>
-    <img src="/img/svg/icon.svg" width="40px" height="40px">
+    <img src="/img/svg/icon.svg" width="40px">
     <v-toolbar-title style="margin-right: 17px">
       <v-select
           :items="maps"
@@ -80,7 +80,7 @@
         <v-list-tile-action>
           <v-badge overlap="">
             <v-icon small slot="badge">open_in_new</v-icon>
-            <img src="/img/svg/github.svg" width="40px" height="40px"/>
+            <img src="/img/svg/github.svg" width="40px"/>
           </v-badge>
         </v-list-tile-action>
       </v-list-tile>
@@ -170,8 +170,9 @@
         <v-list-tile v-if="placedMortars.length > 0">
           <v-list-tile-content>
             <v-layout>
-              <v-btn icon v-for="(aMortar, i) in placedMortars" :key="i" @click="removeMortar(i)">
-                <img :src="aMortar.sUrl" width="48px" height="48px">
+              <v-btn icon style="margin: 2px 2px 2px 2px"
+                     v-for="(aMortar, i) in placedMortars" :key="i" @click="removeMortar(i)">
+                <img :src="aMortar.sUrl" width="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -179,8 +180,9 @@
         <v-list-tile v-if="placedTargets.length > 0">
           <v-list-tile-content>
             <v-layout>
-              <v-btn icon v-for="(aTarget, i) in placedTargets" :key="i" @click="removeTarget(i)">
-                <img :src="aTarget.sUrl" width="48px" height="48px">
+              <v-btn icon style="margin: 2px 2px 2px 2px"
+                     v-for="(aTarget, i) in placedTargets" :key="i" @click="removeTarget(i)">
+                <img :src="aTarget.sUrl" width="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -188,8 +190,9 @@
         <v-list-tile v-if="placedFobs.length > 0">
           <v-list-tile-content>
             <v-layout>
-              <v-btn icon v-for="(aFob, i) in placedFobs" :key="i" @click="removeFob(i)">
-                <img :src="aFob.sUrl" width="48px" height="48px">
+              <v-btn icon style="margin: 2px 2px 2px 2px"
+                     v-for="(aFob, i) in placedFobs" :key="i" @click="removeFob(i)">
+                <img :src="aFob.sUrl" width="48px">
               </v-btn>
             </v-layout>
           </v-list-tile-content>
@@ -206,26 +209,26 @@
       <v-footer v-if="mortar && target" class="front" height="auto" style="pointer-events: all">
         <v-speed-dial>
           <v-btn fab small slot="activator" class="secondary">
-            <img :src="mortar.sUrl" width="48px" height="48px">
+            <img :src="mortar.sUrl" style="width: 48px;">
           </v-btn>
           <v-btn icon
                  v-for="(aMortar, index) in placedMortars"
                  :key="index"
                  @click="mortar = placedMortars[index]"
           >
-            <img :src="aMortar.sUrl" width="48px" height="48px">
+            <img :src="aMortar.sUrl" style="width: 48px;">
           </v-btn>
         </v-speed-dial>
         <v-icon :color="distLine && distLine.options.color">arrow_forward</v-icon>
         <v-speed-dial v-if="target">
           <v-btn fab small slot="activator" class="secondary">
-            <img :src="target.sUrl" width="48px" height="48px">
+            <img :src="target.sUrl" style="width: 48px;">
           </v-btn>
           <v-btn icon
                  v-for="(aTarget, index) in placedTargets"
                  :key="index"
                  @click="target = placedTargets[index]">
-            <img :src="aTarget.sUrl" width="48px" height="48px">
+            <img :src="aTarget.sUrl" style="width: 48px;">
           </v-btn>
         </v-speed-dial>
         <v-flex>
@@ -266,13 +269,13 @@
           <v-badge color="red" right overlap style="margin-top: 6px">
             <span slot="badge"><v-icon>clear</v-icon></span>
             <!--<v-icon large>mail</v-icon>-->
-            <img :src="mortar.sUrl" style="width: 36px; height: 36px;">
+            <img :src="mortar.sUrl" style="width: 36px;">
           </v-badge>
         </v-btn>
         <v-btn icon style="pointer-events: all" v-if="target" class="secondary" @click="removeTarget(0)">
           <v-badge color="red" right overlap  style="margin-top: 6px">
             <span slot="badge"><v-icon>clear</v-icon></span>
-            <img :src="target.sUrl" style="width: 36px; height: 36px;">
+            <img :src="target.sUrl" style="width: 36px;">
           </v-badge>
         </v-btn>
       </div>
