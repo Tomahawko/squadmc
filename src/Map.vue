@@ -452,14 +452,19 @@ export default {
       layer.on("load", () => {
         this.loading = false;
       });
-      if (this.showHeightmap && squadMap.hasHeightmap) {
-        layer = squadMap.getHeightmapTileLayer();
-        layer.on("loading", () => {
+      if (squadMap.hasHeightmap) {
+        const hLayer = squadMap.getHeightmapTileLayer();
+
+        // we set loading callbacks even if its not to be shown yet
+        hLayer.on("loading", () => {
           this.loading = true;
         });
-        layer.on("load", () => {
+        hLayer.on("load", () => {
           this.loading = false;
         });
+        if (this.showHeightmap) {
+          layer = hLayer;
+        }
       }
 
       console.log("setting up map layer");
