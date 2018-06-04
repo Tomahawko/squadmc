@@ -87,24 +87,24 @@
     </v-list>
     <v-list class="pa-0">
       <v-list-group :value="true">
-        <v-list-tile>
-          <v-list-tile-action>
-            <v-switch
-                v-model="simpleMode"
-            ></v-switch>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Toggle simple mode</v-list-tile-title>
-            <v-list-tile-sub-title>click sets mortar/target directly</v-list-tile-sub-title>
-          </v-list-tile-content>
-          <v-list-tile-avatar>
-            <v-icon>location_on</v-icon>
-          </v-list-tile-avatar>
-        </v-list-tile>
         <v-list-tile slot="activator">
           <v-list-tile-content>
             <v-list-tile-title>Map Settings</v-list-tile-title>
           </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-switch
+                v-model="quickMode"
+            ></v-switch>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Quick Mode</v-list-tile-title>
+            <v-list-tile-sub-title>1-click placement</v-list-tile-sub-title>
+          </v-list-tile-content>
+          <v-list-tile-avatar>
+            <v-icon>fast_forward</v-icon>
+          </v-list-tile-avatar>
         </v-list-tile>
         <v-list-tile>
           <v-list-tile-action>
@@ -145,6 +145,11 @@
           <v-list-tile-avatar>
             <v-icon>location_on</v-icon>
           </v-list-tile-avatar>
+        </v-list-tile>
+        <v-list-tile>
+          <div class="pr-3">Pin Size</div>
+          <v-slider v-model="pinSize" hide-details thumb-label class="pa-0 pr-3"
+                    step="12" min="24" max="96" ticks></v-slider>
         </v-list-tile>
       </v-list-group>
       <v-list-group :disabled="placedMortars.length + placedFobs.length + placedTargets.length === 0">
@@ -245,20 +250,20 @@
       </v-footer>
     </div>
   </v-content>
-  <v-content class="fixed" style="pointer-events: none" v-if="simpleMode">
+  <v-content class="fixed" style="pointer-events: none" v-if="quickMode">
     <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start">
       <div style="display: flex; flex-direction: column" class="pt-2">
         <v-btn icon large style="pointer-events: all" v-if="mortar" class="secondary" @click="removeMortar(0)">
           <v-badge color="red" right overlap style="margin-top: 6px">
             <span slot="badge"><v-icon>clear</v-icon></span>
             <!--<v-icon large>mail</v-icon>-->
-            <img :src="mortar.sUrl" style="width: 40px; height: 40px;">
+            <img :src="mortar.sUrl" style="width: 32px; height: 32px;">
           </v-badge>
         </v-btn>
-        <v-btn icon large style="pointer-events: all" v-if="target" class="secondary" @click="removeTarget(0)">
+        <v-btn icon  style="pointer-events: all" v-if="target" class="secondary" @click="removeTarget(0)">
           <v-badge color="red" right overlap  style="margin-top: 6px">
             <span slot="badge"><v-icon>clear</v-icon></span>
-            <img :src="target.sUrl" style="width: 40px; height: 40px;">
+            <img :src="target.sUrl" style="width: 32px; height: 32px;">
           </v-badge>
         </v-btn>
       </div>
@@ -280,7 +285,7 @@ import SquadGrid from "./assets/Leaflet_extensions/SquadGrid";
 import LocationLayer from "./assets/Leaflet_extensions/LocationLayer";
 import { getMapNames, getSquadMap } from "./assets/Leaflet_extensions/MAPDATA";
 import { calcMortarAngle, getKP, pad } from "./assets/Leaflet_extensions/Utils";
-import { PIN_TYPE } from "./assets/Leaflet_extensions/Vars";
+import { ICON_SIZE, PIN_TYPE } from "./assets/Leaflet_extensions/Vars";
 import PinHolder from "./assets/Leaflet_extensions/PinHolder";
 
 Vue.use(Vuetify, {});
@@ -344,7 +349,8 @@ export default {
       PIN_TYPE, // reference to pin types
       pad, // reference to padding function used for formatting distance, heightDiff, etc.
 
-      simpleMode: this.fromStorage("simpleMode", "false") === "true",
+      quickMode: this.fromStorage("quickMode", "false") === "true",
+      pinSize: Number.parseInt(this.fromStorage("pinSize", `${ICON_SIZE}`), 10),
     };
   },
   mounted() {
@@ -539,7 +545,7 @@ export default {
         this.menuPos = new Point(e.originalEvent.x, e.originalEvent.y);
 
         // in simple mode, place mortar or target directly
-        if (this.simpleMode) {
+        if (this.quickMode) {
           if (this.placedMortars.length === 0) {
             this.onSelect(3, PIN_TYPE.MORTAR);
           } else {
@@ -568,7 +574,10 @@ export default {
               return;
             }
           }
-          this.mortar = new PinHolder(type, this.colors.pin.mortar[urlIndex], this.colors.symbol.mortar[urlIndex]);
+          this.mortar = new PinHolder(
+            type, this.colors.pin.mortar[urlIndex],
+            this.colors.symbol.mortar[urlIndex], this.pinSize,
+          );
           this.mortar.pos = this.menuLatlng;
           this.mortar.addTo(this.map);
           this.placedMortars.push(this.mortar);
@@ -581,7 +590,10 @@ export default {
               return;
             }
           }
-          this.target = new PinHolder(type, this.colors.pin.target[urlIndex], this.colors.symbol.target[urlIndex]);
+          this.target = new PinHolder(
+            type, this.colors.pin.target[urlIndex],
+            this.colors.symbol.target[urlIndex], this.pinSize,
+          );
           this.target.pos = this.menuLatlng;
           this.target.addTo(this.map);
           this.placedTargets.push(this.target);
@@ -594,7 +606,7 @@ export default {
               return;
             }
           }
-          this.fob = new PinHolder(type, this.colors.pin.fob[urlIndex], this.colors.symbol.fob[urlIndex]);
+          this.fob = new PinHolder(type, this.colors.pin.fob[urlIndex], this.colors.symbol.fob[urlIndex], this.pinSize);
           this.fob.pos = this.menuLatlng;
           this.fob.addTo(this.map);
           this.placedFobs.push(this.fob);
@@ -851,13 +863,28 @@ export default {
         newM.setActive(true, this.map);
       }
     },
-    simpleMode(b) {
-      console.log("simpleMode watcher:", b);
+    quickMode(b) {
+      console.log("quickMode watcher:", b);
       if (b) {
         // reset map
         this.changeMap(this.selectedMap);
       }
-      this.toStorage("simpleMode", b);
+      this.toStorage("quickMode", b);
+    },
+    pinSize(newSize) {
+      console.log("pinSize:", newSize);
+      this.placedMortars.forEach((marker) => {
+        marker.size = newSize;
+        marker.removeFrom(this.map);
+        marker.addTo(this.map);
+      });
+      this.placedTargets.forEach((marker) => {
+        marker.size = newSize;
+      });
+      this.placedFobs.forEach((marker) => {
+        marker.size = newSize;
+      });
+      this.toStorage("pinSize", `${newSize}`);
     },
   },
   computed: {

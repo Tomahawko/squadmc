@@ -12,19 +12,15 @@ export default class PinHolder {
    * @param {String} pinUrl - url of pin icon graphic
    * @param {String} symbolUrl - url of symbol icon graphic
    * @param {Number} type - type of pin
+   * @param {Number} [size] - pin icon size
    */
-  constructor(type, pinUrl, symbolUrl) {
-    const icon = new Icon({
-      iconUrl: pinUrl,
-      iconSize: [ICON_SIZE, ICON_SIZE],
-      iconAnchor: [ICON_SIZE / 2, ICON_SIZE - 4],
-      // point from which the popup should open relative to the iconAnchor
-      popupAnchor: [0, -ICON_SIZE / 2],
-    });
+  constructor(type, pinUrl, symbolUrl, size = ICON_SIZE) {
+    const icon = PinHolder.createIcon(pinUrl, size);
 
     this.defLatlng = new LatLng(-5000, -5000);
 
     this.marker = new Marker(this.defLatlng, { draggable: "true", icon });
+    console.log("marker:", this.marker);
 
     if (type === PIN_TYPE.MORTAR) {
       this._createMortarAttachments();
@@ -61,6 +57,16 @@ export default class PinHolder {
     });
   }
 
+  static createIcon(pinUrl, size) {
+    return new Icon({
+      iconUrl: pinUrl,
+      iconSize: [size, size],
+      iconAnchor: [size / 2, (4 * size / ICON_SIZE)],
+      // point from which the popup should open relative to the iconAnchor
+      popupAnchor: [0, -ICON_SIZE / 2],
+    });
+  }
+
   /**
    * Get position of pin
    */
@@ -78,6 +84,24 @@ export default class PinHolder {
     if (this.type === PIN_TYPE.MORTAR || this.type === PIN_TYPE.FOB) {
       this._moveAttachments(latlng);
     }
+  }
+
+  get size() {
+    return this.marker.options.icon.iconSize[0];
+  }
+
+  set size(size) {
+    console.log("size:", size);
+    // console.log("marker before:", this.marker);
+    // const icon = this.marker.options.icon;
+    // console.log("icon:", icon);
+    //
+    // icon.iconSize = [size, size];
+    // icon.iconAnchor = [size / 2, size - (4 * size / ICON_SIZE)];
+    // // point from which the popup should open relative to the iconAnchor
+    // icon.popupAnchor = [0, -ICON_SIZE / 2];
+    this.marker.setIcon(PinHolder.createIcon(this.pUrl, size));
+    // console.log("marker after:", this.marker);
   }
 
   /**
