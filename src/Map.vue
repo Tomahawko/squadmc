@@ -349,7 +349,7 @@ export default {
       PIN_TYPE, // reference to pin types
       pad, // reference to padding function used for formatting distance, heightDiff, etc.
 
-      quickMode: this.fromStorage("quickMode", "false") === "true",
+      quickMode: this.fromStorage("quickMode", "true") === "true",
       pinSize: Number.parseInt(this.fromStorage("pinSize", `${ICON_SIZE}`), 10),
     };
   },
